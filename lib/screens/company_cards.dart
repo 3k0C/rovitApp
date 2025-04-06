@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:rovit/company_assign_cards.dart';
+import 'package:rovit/screens/company_assign_cards.dart';
+import 'package:rovit/widgets/rovit_scaffold.dart';
+import 'package:rovit/widgets/company_fab.dart';
 
 class CompanyCardsScreen extends StatelessWidget {
   const CompanyCardsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Inicio")),
+    return MyScaffold(
+      appBarTitle: "Mis Tarjetas",
+      floatingActionButton: CompanyFloatingButton(
+        screen: const CompanyAssignCardsScreen(),
+      ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            const Text(
-              "Mis Tarjetas",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
-            ),
-            const SizedBox(height: 20),
             Table(
               columnWidths: const {
                 0: FractionColumnWidth(0.2),
@@ -61,7 +61,7 @@ class CompanyCardsScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const CompanyAsignCardsScreen()),
+                              MaterialPageRoute(builder: (context) => const CompanyAssignCardsScreen()),
                             );
                           },
                           child: const Text("+"),
@@ -74,7 +74,7 @@ class CompanyCardsScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const CompanyAsignCardsScreen()),
+                              MaterialPageRoute(builder: (context) => const CompanyAssignCardsScreen()),
                             );
                           },
                           child: const Text("-"),

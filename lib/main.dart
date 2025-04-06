@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rovit/home.dart';
+import 'package:rovit/screens/home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,29 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'RoViT',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        textTheme:
+        GoogleFonts.manropeTextTheme(ThemeData().textTheme).apply(
+          bodyColor: const Color(0xFFFFFFFF),
+        ),
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark, 
+          primary: const Color(0xFF0582CA), 
+          onPrimary: const Color(0xFFFFFFFF), 
+          secondary: const Color(0xFF03DAC6), 
+          onSecondary: const Color(0xFF000000), 
+          error: const Color(0xFFB00020), 
+          onError: const Color(0xFFFFFFFF), 
+          surface: const Color(0xFF1B1B1B), 
+          onSurface: const Color(0xFFFFFFFF),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1C1A1B),
+            foregroundColor: const Color(0xFFFFFFFF),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
       home: const LoginScreen(),
     );
@@ -46,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SnackBar(content: Text("Correo o contraseña incorrectos")),
         );
       }
-    };
+    }
   }
 
   @override

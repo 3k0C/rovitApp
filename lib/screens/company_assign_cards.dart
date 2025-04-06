@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rovit/company_cards.dart';
+import 'package:rovit/screens/company_cards.dart';
+import 'package:rovit/widgets/rovit_scaffold.dart';
 
-class CompanyAsignCardsScreen extends StatefulWidget {
-  const CompanyAsignCardsScreen({super.key});
+class CompanyAssignCardsScreen extends StatefulWidget {
+  const CompanyAssignCardsScreen({super.key});
 
   @override
-  _CompanyAsignCardsScreen createState() => _CompanyAsignCardsScreen();
+  _CompanyAssignCardsScreen createState() => _CompanyAssignCardsScreen();
 }
 
-class _CompanyAsignCardsScreen extends State<CompanyAsignCardsScreen> {
+class _CompanyAssignCardsScreen extends State<CompanyAssignCardsScreen> {
   String? selectedCardOption, selectedEmployeeOption, selectedModelOption;
   final List<String> cardOptions = ["Opción 1", "Opción 2", "Opción 3"];
   final List<String> employeeOptions = ["Empleado 1", "Empleado 2", "Empleado 3"];
@@ -16,8 +17,8 @@ class _CompanyAsignCardsScreen extends State<CompanyAsignCardsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Asignar Tarjetas")),
+    return MyScaffold(
+      appBarTitle: "Asignar Tarjetas",
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
