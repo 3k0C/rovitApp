@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rovit/screens/home.dart';
+import 'package:rovit/screens/register.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rovit/widgets/login/login_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,91 +64,141 @@ class _LoginScreenState extends State<LoginScreen> {
       if (_emailController.text == "test@example.com" &&
           _passwordController.text == "password123") {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Inicio de sesión exitoso")),
+          const SnackBar(content: Text("Inicio de sesión exitoso"), backgroundColor: Colors.green,),
         );
-      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+      else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Correo o contraseña incorrectos")),
+          const SnackBar(content: Text("Credenciales incorrectas"), backgroundColor: Colors.red,),
         );
       }
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Conectarse a RoViT",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.qr_code_scanner, size: 100, color: Color(0xFF0582CA)),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Acceso a RoViT",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: "Correo electrónico",
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Por favor ingrese su correo";
+                        } else if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}")
+                            .hasMatch(value)) {
+                          return "Ingrese un correo válido";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: "Contraseña",
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Por favor ingrese su contraseña";
+                        } else if (value.length < 6) {
+                          return "La contraseña debe tener al menos 6 caracteres";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text("¿Olvidaste tu contraseña?"),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children:[
+                        Expanded(
+                          child:
+                            CustomButton(label: "Inicio de sesión", onPressed: _login),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Correo electrónico",
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Por favor ingrese su correo";
-                    } else if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}").hasMatch(value)) {
-                      return "Ingrese un correo válido";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: "Contraseña",
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Por favor ingrese su contraseña";
-                    } else if (value.length < 6) {
-                      return "La contraseña debe tener al menos 6 caracteres";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text("¿Olvidaste tu contraseña?"),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()),
-                      );
-                    },
-                    child: const Text("Iniciar sesión"),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          const SizedBox(height: 20),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "¿No tienes cuenta?",
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      label: "Usuario",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegisterFormScreen()),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: CustomButton(
+                      label: "Empresa",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegisterFormScreen()),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

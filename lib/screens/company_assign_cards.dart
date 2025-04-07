@@ -82,7 +82,7 @@ class _CompanyAssignCardsScreen extends State<CompanyAssignCardsScreen> {
                   MaterialPageRoute(builder: (context) => const CompanyCardsScreen()),
                 );
               },
-              child: const Text("Aña"),
+              child: const Text("Añadir"),
             ),
           ],
         ),

@@ -18,9 +18,11 @@ class MyScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        
         title:Text(
             appBarTitle,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
           ),
         ),
       body: body,
@@ -33,7 +35,7 @@ class MyScaffold extends StatelessWidget {
 
 class NavigationDrawer extends StatelessWidget {
   NavigationDrawer({Key? key}) : super(key: key);
-  final Map<String, String> user = {
+  final Map<String, String> _user = {
     'name': 'John Doe',
     'role': 'Admin',
   };
@@ -50,9 +52,9 @@ class NavigationDrawer extends StatelessWidget {
                 children: [
                   Text('Rovit', style: TextStyle(fontSize: 24, color: Colors.white)),
                   SizedBox(height: 10),
-                  Text('Bienvenido ${user['name'] ?? ''}', style: TextStyle(fontSize: 16, color: Colors.white)),
+                  Text('Bienvenido ${_user['name'] ?? ''}', style: TextStyle(fontSize: 16, color: Colors.white)),
                   SizedBox(height: 10),
-                  Text('Rol: ${user['role'] ?? ''}', style: TextStyle(fontSize: 16, color: Colors.white)),
+                  Text('Rol: ${_user['role'] ?? ''}', style: TextStyle(fontSize: 16, color: Colors.white)),
                   ],
               ),
             ),
@@ -70,7 +72,7 @@ class NavigationDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
+              leading: Icon(Icons.credit_card),
               title: Text('Tarjetas'),
               onTap: () {
                 Navigator.pop(context);
@@ -89,12 +91,24 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CompanyEmployeesScreen(),
+                    builder: (context) => CompanyEmployeesScreen(),
                 ),
                 );
               },
             ),
-                        ListTile(
+            ListTile(
+              leading: Icon(Icons.add_card),
+              title: Text('Asignar Tarjetas'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CompanyAssignCardsScreen(),
+                ),
+                );
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.settings),
               title: Text('Configuración'),
               onTap: () {

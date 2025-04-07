@@ -2,16 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:rovit/screens/company_assign_cards.dart';
 import 'package:rovit/widgets/company_fab.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
+import 'package:rovit/screens/company_create_employee.dart';
+import 'package:rovit/models/companyEmployee.dart';
 
-class CompanyEmployeesScreen extends StatelessWidget {
-  const CompanyEmployeesScreen({super.key});
+class CompanyEmployeesScreen extends StatefulWidget {
+  final Employee? employee;
+  const CompanyEmployeesScreen({super.key, this.employee});
+  
+
+  @override
+  _CompanyEmployeesScreenState createState() => _CompanyEmployeesScreenState();
+}
+
+class _CompanyEmployeesScreenState extends State<CompanyEmployeesScreen> {
+  late List<Employee> employees = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEmployees();
+    }
+
+  void fetchEmployees() async {
+    // Aquí harías la llamada a la API y actualizarías la lista.
+    setState(() {
+        if (widget.employee != null) {
+            employees.add(widget.employee!);
+        }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
       appBarTitle: "Mis Empleados",
       floatingActionButton: CompanyFloatingButton(
-        screen: const CompanyAssignCardsScreen(),
+        screen: EmployeeFormScreen(),
         ),
       body: Center(
         child: Column(
@@ -44,19 +70,19 @@ class CompanyEmployeesScreen extends StatelessWidget {
                     child: Text("", textAlign: TextAlign.center),
                   ),
                 ]),
-                for (int i = 1; i <= 5; i++)
+                for (var employee in employees) ...[
                   TableRow(children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("EMPLEADO $i", textAlign: TextAlign.center),
+                      child: Text(employee.name, textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("EMAIL $i", textAlign: TextAlign.center),
+                      child: Text(employee.email, textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("CARD $i", textAlign: TextAlign.center),
+                      child: Text(employee.position, textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -72,6 +98,7 @@ class CompanyEmployeesScreen extends StatelessWidget {
                         ),
                     ),
                   ]),
+                ],
               ],
             ),
           ],

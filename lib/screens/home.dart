@@ -18,8 +18,8 @@ class HomeScreen extends StatelessWidget {
           child: SizedBox(
             width: 300,
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CompanyButtonHome(
               screen: const CompanyCardsScreen(), 
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
               ),
             const SizedBox(height: 10),
             CompanyButtonHome(
-              screen: const CompanyEmployeesScreen(), 
+              screen: CompanyEmployeesScreen(), 
               label: "Empleados",
               icon: Icons.people,
               ),

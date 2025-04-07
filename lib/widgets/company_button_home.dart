@@ -12,23 +12,27 @@ class CompanyButtonHome extends StatelessWidget {
   final Widget screen;
   final String label;
   final IconData icon;
+  final VoidCallback? onPressedCallback;
 
   const CompanyButtonHome({
     Key? key,
     required this.screen,
     required this.label,
     required this.icon,
+    this.onPressedCallback,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => screen),
-        );
-      },
+    onPressed: onPressedCallback ??
+        () {
+          // Comportamiento predeterminado si no se proporciona un callback
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => screen),
+          );
+        },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white, // Color de texto e ícono
         shape: myRoundedBorder,
