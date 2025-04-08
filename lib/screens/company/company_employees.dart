@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rovit/screens/company_assign_cards.dart';
+import 'package:rovit/screens/company/company_assign_cards.dart';
 import 'package:rovit/widgets/company_fab.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
-import 'package:rovit/screens/company_create_employee.dart';
-import 'package:rovit/models/companyEmployee.dart';
+import 'package:rovit/screens/company/company_create_employee.dart';
+import 'package:rovit/models/company_employee.dart';
+
+import 'dart:convert'; // Para decodificar JSON
+import 'package:http/http.dart' as http;
 
 class CompanyEmployeesScreen extends StatefulWidget {
   final Employee? employee;
-  const CompanyEmployeesScreen({super.key, this.employee});
+  const CompanyEmployeesScreen({super.key, this.employee}); // Variable para almacenar el código de estado
   
 
   @override
@@ -15,7 +18,7 @@ class CompanyEmployeesScreen extends StatefulWidget {
 }
 
 class _CompanyEmployeesScreenState extends State<CompanyEmployeesScreen> {
-  late List<Employee> employees = [];
+  List<Employee> employees = [];
 
   @override
   void initState() {
@@ -23,14 +26,41 @@ class _CompanyEmployeesScreenState extends State<CompanyEmployeesScreen> {
     fetchEmployees();
     }
 
-  void fetchEmployees() async {
-    // Aquí harías la llamada a la API y actualizarías la lista.
-    setState(() {
-        if (widget.employee != null) {
-            employees.add(widget.employee!);
-        }
-    });
+
+void fetchEmployees() async {
+  const String apiUrl = 'https://dev-api-rovit.ecoitec.io/api/v1/peoples';
+  try {
+    final response = await http.get(Uri.parse(apiUrl));
+
+    print("🟢 response.body: ${response.body}"); // <- Aquí ves el JSON
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      print("🟢 jsonResponse: $jsonResponse"); // <- Aquí ves el JSON decodificado
+      final List<dynamic> dataList = jsonResponse['data']['data']; // <-- esta línea puede fallar si 'data' o 'data.data' no existen
+      print("🟢 dataList: $dataList"); // <- Aquí ves la lista de datos
+      setState(() {
+        employees = dataList.map((json) => Employee.fromJson(json)).toList();
+      });
+      if(dataList.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No hay empleados')),
+        );
+      }
+    } 
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al obtener empleados: ${response.statusCode}')),
+      );
+    }
+  } catch (e) {
+    print("🔴 Error en fetchEmployees: $e"); // <- te muestra el error real
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error de red: $e')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +112,7 @@ class _CompanyEmployeesScreenState extends State<CompanyEmployeesScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(employee.position, textAlign: TextAlign.center),
+                      child: Text(employee.position!, textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),

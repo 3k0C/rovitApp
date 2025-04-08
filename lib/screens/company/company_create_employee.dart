@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
-import 'package:rovit/screens/company_employees.dart';
-import 'package:rovit/models/companyEmployee.dart';
+import 'package:rovit/screens/company/company_employees.dart';
+import 'package:rovit/models/company_employee.dart';
 
 class EmployeeFormScreen extends StatefulWidget {
+  const EmployeeFormScreen({super.key});
+
   @override
   _EmployeeFormScreenState createState() => _EmployeeFormScreenState();
 }
@@ -11,10 +15,11 @@ class EmployeeFormScreen extends StatefulWidget {
 class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
+  String _lastName = '';
   String _email = '';
-  int _phone = 0;
-  String? _department = null;
-  String? _position = null;
+  String _phone = '';
+  String? _department;
+  String? _position;
   List<String> departmentOptions = ["Opción 1", "Opción 2", "Opción 3"]; // Llamada a la API para obtener las opciones de departamento
   List<String> positionOptions = ["Opción 1", "Opción 2", "Opción 3"]; // Llamada a la API para obtener las opciones de puesto
 
@@ -22,7 +27,9 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
       if(_position != null && _department != null){ 
         if (_formKey.currentState!.validate()) {
           _formKey.currentState!.save();
-          final newEmployee = Employee( name: _name, email: _email, phone: _phone, department: _department ?? '', position: _position ?? '', );
+          final newEmployee = Employee( name: _name, lastName: _lastName, email: _email, phone: _phone, department: _department ?? '', position: _position ?? '', );
+          final jsonEmployee = newEmployee.toJson();
+          print("🟢 jsonEmployee: $jsonEmployee"); // <- Aquí ves el JSON del nuevo empleado
           _formKey.currentState!.reset();
           Navigator.pushReplacement(
             context,
@@ -66,6 +73,13 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
               ),
               const SizedBox(height: 30),
               TextFormField(
+                decoration: InputDecoration(labelText: 'Apellido'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Introduce un apellido' : null,
+                onSaved: (value) => _lastName = value!,
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
                 decoration: InputDecoration(labelText: 'Email'),
                 validator: (value) =>
                     value!.isEmpty ? 'Introduce un email' : null,
@@ -76,7 +90,7 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
                 decoration: InputDecoration(labelText: 'Teléfono'),
                 validator: (value) =>
                     value!.isEmpty ? 'Introduce un telefono' : null,
-                onSaved: (value) => _email = value!,
+                onSaved: (value) => _phone = value!,
               ),
             const SizedBox(height: 30),
             IntrinsicWidth(

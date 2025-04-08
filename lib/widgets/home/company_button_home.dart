@@ -15,12 +15,13 @@ class CompanyButtonHome extends StatelessWidget {
   final VoidCallback? onPressedCallback;
 
   const CompanyButtonHome({
-    Key? key,
+    super.key,
     required this.screen,
     required this.label,
     required this.icon,
     this.onPressedCallback,
-  }) : super(key: key);
+  });
+  
 
   @override
   Widget build(BuildContext context) {

@@ -6,15 +6,17 @@ class CustomButton extends StatelessWidget {
   final Color backgroundColor;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.backgroundColor = const Color.fromARGB(255, 7, 83, 128),
-  }) : super(key: key);
+    
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      autofocus: true,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(

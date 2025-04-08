@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rovit/screens/company_assign_cards.dart';
-import 'package:rovit/screens/company_employees.dart';
-import 'package:rovit/screens/company_cards.dart';
-import 'package:rovit/screens/company_config.dart';
+import 'package:rovit/screens/company/company_assign_cards.dart';
+import 'package:rovit/screens/company/company_employees.dart';
+import 'package:rovit/screens/company/company_cards.dart';
+import 'package:rovit/screens/company/company_config.dart';
 import 'package:rovit/screens/home.dart';
 
 
@@ -11,7 +11,7 @@ class MyScaffold extends StatelessWidget {
   final String appBarTitle;
   final Widget? floatingActionButton;
 
-  MyScaffold({Key? key, required this.body, required this.appBarTitle, this.floatingActionButton}) : super(key: key);
+  const MyScaffold({super.key, required this.body, required this.appBarTitle, this.floatingActionButton});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class MyScaffold extends StatelessWidget {
 }
 
 class NavigationDrawer extends StatelessWidget {
-  NavigationDrawer({Key? key}) : super(key: key);
+  NavigationDrawer({super.key});
   final Map<String, String> _user = {
     'name': 'John Doe',
     'role': 'Admin',

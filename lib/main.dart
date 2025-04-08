@@ -147,7 +147,7 @@ Widget build(BuildContext context) {
                       children:[
                         Expanded(
                           child:
-                            CustomButton(label: "Inicio de sesión", onPressed: _login),
+                            CustomButton(label: "Inicio de sesión", onPressed: _login, ),
                         ),
                       ],
                     ),

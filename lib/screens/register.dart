@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rovit/screens/home.dart';
-import 'package:rovit/widgets/rovit_scaffold.dart';
+
 
 class RegisterFormScreen extends StatefulWidget {
+  const RegisterFormScreen({super.key});
+
+  @override
   _RegisterFormScreen createState() => _RegisterFormScreen();
 }
 
@@ -11,7 +14,7 @@ class _RegisterFormScreen extends State<RegisterFormScreen> {
   String _name = '';
   String _email = '';
   String _password = '';
-  String _userType = 'Empleado'; // Valor por defecto
+  final String _userType = 'Empleado'; // Valor por defecto
 
  void _submitForm() {
     if (_formKey.currentState!.validate()) {

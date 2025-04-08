@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rovit/screens/company_assign_cards.dart';
-import 'package:rovit/screens/company_cards.dart';
-import 'package:rovit/screens/company_config.dart';
-import 'package:rovit/screens/company_employees.dart';
+import 'package:rovit/screens/company/company_assign_cards.dart';
+import 'package:rovit/screens/company/company_cards.dart';
+import 'package:rovit/screens/company/company_config.dart';
+import 'package:rovit/screens/company/company_employees.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
-import 'package:rovit/widgets/company_button_home.dart';
+import 'package:rovit/widgets/home/company_button_home.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,6 +21,14 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SearchBar(
+              hintText: "Buscar",
+              elevation: WidgetStatePropertyAll(10),
+              onChanged: (value) {
+                // Handle search logic here
+              },
+            ),
+            const SizedBox(height: 30),
             CompanyButtonHome(
               screen: const CompanyCardsScreen(), 
               label: "Tarjetas",
