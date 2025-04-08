@@ -18,12 +18,12 @@ class MyScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        
         title:Text(
             appBarTitle,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
           ),
+            leading: Navigator.canPop(context) ? _buildBackArrow(context) : null, // Muestra el botón de retroceso solo si se puede volver atrás
         ),
       body: body,
       drawer: NavigationDrawer(),
@@ -130,4 +130,13 @@ class NavigationDrawer extends StatelessWidget {
           ],
         ),
       );
+}
+
+Widget _buildBackArrow(context){
+           return IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context); // Vuelve a la pantalla anterior
+                },
+              );
 }

@@ -1,9 +1,8 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
 import 'package:rovit/screens/company/company_employees.dart';
-import 'package:rovit/models/company_employee.dart';
+import 'package:rovit/models/company_employee_model.dart';
 
 class EmployeeFormScreen extends StatefulWidget {
   const EmployeeFormScreen({super.key});
@@ -16,6 +15,7 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _lastName = '';
+  String _password = '';
   String _email = '';
   String _phone = '';
   String? _department;
@@ -27,7 +27,7 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
       if(_position != null && _department != null){ 
         if (_formKey.currentState!.validate()) {
           _formKey.currentState!.save();
-          final newEmployee = Employee( name: _name, lastName: _lastName, email: _email, phone: _phone, department: _department ?? '', position: _position ?? '', );
+          final newEmployee = Employee( name: _name, last_name: _lastName, password: _password, email: _email, mobile_phone: _phone, job_department: _department ?? '', job_description: _position ?? '', );
           final jsonEmployee = newEmployee.toJson();
           print("🟢 jsonEmployee: $jsonEmployee"); // <- Aquí ves el JSON del nuevo empleado
           _formKey.currentState!.reset();
@@ -77,6 +77,14 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
                 validator: (value) =>
                     value!.isEmpty ? 'Introduce un apellido' : null,
                 onSaved: (value) => _lastName = value!,
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Contraseña'),
+                obscureText: true,
+                validator: (value) =>
+                    value!.isEmpty ? 'Introduce una contraseña' : null,
+                onSaved: (value) => _password = value!,
               ),
               const SizedBox(height: 30),
               TextFormField(

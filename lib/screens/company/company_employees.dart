@@ -3,7 +3,7 @@ import 'package:rovit/screens/company/company_assign_cards.dart';
 import 'package:rovit/widgets/company_fab.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
 import 'package:rovit/screens/company/company_create_employee.dart';
-import 'package:rovit/models/company_employee.dart';
+import 'package:rovit/models/company_employee_model.dart';
 
 import 'dart:convert'; // Para decodificar JSON
 import 'package:http/http.dart' as http;
@@ -112,7 +112,7 @@ void fetchEmployees() async {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(employee.position!, textAlign: TextAlign.center),
+                      child: Text(employee.job_description!, textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),

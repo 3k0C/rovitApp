@@ -9,6 +9,7 @@ import 'package:rovit/widgets/home/company_button_home.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
@@ -22,10 +23,10 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SearchBar(
+              controller: TextEditingController(),
               hintText: "Buscar",
               elevation: WidgetStatePropertyAll(10),
               onChanged: (value) {
-                // Handle search logic here
               },
             ),
             const SizedBox(height: 30),
