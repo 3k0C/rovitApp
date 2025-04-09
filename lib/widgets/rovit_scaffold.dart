@@ -3,7 +3,9 @@ import 'package:rovit/screens/company/company_assign_cards.dart';
 import 'package:rovit/screens/company/company_employees.dart';
 import 'package:rovit/screens/company/company_cards.dart';
 import 'package:rovit/screens/company/company_config.dart';
-import 'package:rovit/screens/home.dart';
+import 'package:rovit/models/drawer_item.dart';
+import 'package:rovit/widgets/navigation_drawer.dart';
+
 
 
 class MyScaffold extends StatelessWidget {
@@ -11,7 +13,14 @@ class MyScaffold extends StatelessWidget {
   final String appBarTitle;
   final Widget? floatingActionButton;
 
-  const MyScaffold({super.key, required this.body, required this.appBarTitle, this.floatingActionButton});
+  MyScaffold({super.key, required this.body, required this.appBarTitle, this.floatingActionButton});
+
+  final List<DrawerItem> screens = [
+    DrawerItem(title: 'Tarjetas', icon: Icons.credit_card, screen: CompanyCardsScreen()),
+    DrawerItem(title: 'Empleados', icon: Icons.people, screen: CompanyEmployeesScreen()),
+    DrawerItem(title: 'Asignar Tarjetas', icon: Icons.add_card, screen: CompanyAssignCardsScreen()),
+    DrawerItem(title: 'Configuración', icon: Icons.settings, screen: CompanyConfigurationScreen()),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,110 +35,11 @@ class MyScaffold extends StatelessWidget {
             leading: Navigator.canPop(context) ? _buildBackArrow(context) : null, // Muestra el botón de retroceso solo si se puede volver atrás
         ),
       body: body,
-      drawer: NavigationDrawer(),
+      drawer: MyNavigationDrawer(screens: screens), // Agrega el NavigationDrawer al Scaffold
       floatingActionButton: floatingActionButton, // Agrega el FAB al Scaffold
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // Centra el FAB
     );
   }
-}
-
-class NavigationDrawer extends StatelessWidget {
-  NavigationDrawer({super.key});
-  final Map<String, String> _user = {
-    'name': 'John Doe',
-    'role': 'Admin',
-  };
-  @override
-  Widget build(BuildContext context) => Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Rovit', style: TextStyle(fontSize: 24, color: Colors.white)),
-                  SizedBox(height: 10),
-                  Text('Bienvenido ${_user['name'] ?? ''}', style: TextStyle(fontSize: 16, color: Colors.white)),
-                  SizedBox(height: 10),
-                  Text('Rol: ${_user['role'] ?? ''}', style: TextStyle(fontSize: 16, color: Colors.white)),
-                  ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Inicio'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text('Tarjetas'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CompanyCardsScreen(),
-                ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.people),
-              title: Text('Empleados'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CompanyEmployeesScreen(),
-                ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.add_card),
-              title: Text('Asignar Tarjetas'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CompanyAssignCardsScreen(),
-                ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Configuración'),
-              onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CompanyConfigurationScreen(),
-                            ),
-                          );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Cerrar sesión'),
-              onTap: () {
-                Navigator.pop(context); // Cierra el Drawer
-              },
-            ),
-          ],
-        ),
-      );
 }
 
 Widget _buildBackArrow(context){

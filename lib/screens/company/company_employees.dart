@@ -32,34 +32,39 @@ void fetchEmployees() async {
   try {
     final response = await http.get(Uri.parse(apiUrl));
 
-    print("🟢 response.body: ${response.body}"); // <- Aquí ves el JSON
+    print("🟢 response.body: ${response.body}");
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      print("🟢 jsonResponse: $jsonResponse"); // <- Aquí ves el JSON decodificado
-      final List<dynamic> dataList = jsonResponse['data']['data']; // <-- esta línea puede fallar si 'data' o 'data.data' no existen
-      print("🟢 dataList: $dataList"); // <- Aquí ves la lista de datos
+      print("🟢 jsonResponse: $jsonResponse");
+
+      // AQUÍ pones la línea que mencionaste:
+      List<Employee> loadedEmployees = (jsonResponse['data']['data'] as List)
+          .map((item) => Employee.fromJson(item))
+          .toList();
+
       setState(() {
-        employees = dataList.map((json) => Employee.fromJson(json)).toList();
+        employees = loadedEmployees;
       });
-      if(dataList.isEmpty){
+
+      if (loadedEmployees.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('No hay empleados')),
         );
       }
-    } 
-    else {
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al obtener empleados: ${response.statusCode}')),
       );
     }
   } catch (e) {
-    print("🔴 Error en fetchEmployees: $e"); // <- te muestra el error real
+    print("🔴 Error en fetchEmployees: $e");
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Error de red: $e')),
     );
   }
 }
+
 
 
   @override
@@ -104,30 +109,29 @@ void fetchEmployees() async {
                   TableRow(children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(employee.name, textAlign: TextAlign.center),
+                      child: Text("${employee.user.name} ${employee.user.lastName}", textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(employee.email, textAlign: TextAlign.center),
+                      child: Text(employee.user.email, textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(employee.job_description!, textAlign: TextAlign.center),
+                      child: Text(employee.jobDescription ?? '-', textAlign: TextAlign.center),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child:
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const CompanyAssignCardsScreen()),
-                            );
-                          },
-                          child: const Text("+"),
-                        ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CompanyAssignCardsScreen()),
+                          );
+                        },
+                        child: const Text("+"),
+                      ),
                     ),
-                  ]),
+                  ]),                   
                 ],
               ],
             ),

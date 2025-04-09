@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rovit/widgets/rovit_scaffold.dart';
 import 'package:rovit/screens/company/company_employees.dart';
 import 'package:rovit/models/company_employee_model.dart';
+import 'package:rovit/models/user_model.dart';
 
 class EmployeeFormScreen extends StatefulWidget {
   const EmployeeFormScreen({super.key});
@@ -12,48 +13,75 @@ class EmployeeFormScreen extends StatefulWidget {
 }
 
 class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
-  final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _lastName = '';
-  String _password = '';
-  String _email = '';
-  String _phone = '';
-  String? _department;
-  String? _position;
-  List<String> departmentOptions = ["Opción 1", "Opción 2", "Opción 3"]; // Llamada a la API para obtener las opciones de departamento
-  List<String> positionOptions = ["Opción 1", "Opción 2", "Opción 3"]; // Llamada a la API para obtener las opciones de puesto
+final _formKey = GlobalKey<FormState>();
+String? _name;
+String? _lastName;
+String? _email;
+String? _mobilePhone;
+String? _idPeople;
+String? _idCompany;
+String? _isActive;
 
-  void _submitForm() {
-      if(_position != null && _department != null){ 
-        if (_formKey.currentState!.validate()) {
-          _formKey.currentState!.save();
-          final newEmployee = Employee( name: _name, last_name: _lastName, password: _password, email: _email, mobile_phone: _phone, job_department: _department ?? '', job_description: _position ?? '', );
-          final jsonEmployee = newEmployee.toJson();
-          print("🟢 jsonEmployee: $jsonEmployee"); // <- Aquí ves el JSON del nuevo empleado
-          _formKey.currentState!.reset();
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CompanyEmployeesScreen(
-              employee: newEmployee, // Aquí pasamos el empleado
-              ),
-            ),
+
+
+User? user = null;
+String? _department;
+String? _position;
+List<String> departmentOptions = ["Opción 1", "Opción 2", "Opción 3"];
+List<String> positionOptions = ["Opción 1", "Opción 2", "Opción 3"];
+
+
+void _submitForm() {
+  if (_position != null && _department != null) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final user = User(
+        id:0,
+        name: _name!,
+        lastName: _lastName!,
+        email: _email!,
+        mobilePhone: '722362903',
+        idPeople: 0,
+        idCompany: 0,
+        isActive: true
+      );
+
+      final newEmployee = Employee(
+        user: user,
+        jobDepartment: _department!,
+        jobDescription: _position!,
+      );
+
+      print("🟢 newEmployee: $newEmployee");
+      print("🟢 jsonEmployee: ${newEmployee.toJson()}");
+
+      _formKey.currentState!.reset();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CompanyEmployeesScreen(
+            employee: newEmployee,
+          ),
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Empleado agregado como $_position')),
+      );
+    }
+  } else {
+    (_position == null)
+        ? ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Seleccione un puesto')),
+          )
+        : ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Seleccione un departamento')),
           );
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Empleado $_name agregado como $_position')),
-            );
-        }
-      }
-      else{
-          (_position == null) ? 
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Seleccione un puesto')),
-            ) : 
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Seleccione un departamento')),
-            );
-        } 
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +97,7 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
                 decoration: InputDecoration(labelText: 'Nombre'),
                 validator: (value) =>
                     value!.isEmpty ? 'Introduce un nombre' : null,
-                onSaved: (value) => _name = value!,
+                onSaved: (value) =>  _name = value!,
               ),
               const SizedBox(height: 30),
               TextFormField(
@@ -83,8 +111,8 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
                 decoration: InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
                 validator: (value) =>
-                    value!.isEmpty ? 'Introduce una contraseña' : null,
-                onSaved: (value) => _password = value!,
+                    value!.isEmpty ? 'Introduce una email' : null,
+                onSaved: (value) => _email = value!,
               ),
               const SizedBox(height: 30),
               TextFormField(
@@ -98,7 +126,7 @@ class _EmployeeFormScreenState extends State<EmployeeFormScreen> {
                 decoration: InputDecoration(labelText: 'Teléfono'),
                 validator: (value) =>
                     value!.isEmpty ? 'Introduce un telefono' : null,
-                onSaved: (value) => _phone = value!,
+                onSaved: (value) => _mobilePhone = value!,
               ),
             const SizedBox(height: 30),
             IntrinsicWidth(

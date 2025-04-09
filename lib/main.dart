@@ -103,8 +103,9 @@ Widget build(BuildContext context) {
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
-                        labelText: "Correo electrónico",
-                        border: OutlineInputBorder(),
+                      labelText: "Correo electrónico",
+                      border: OutlineInputBorder(),
+                      suffixIcon: Icon(Icons.email),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
@@ -123,6 +124,7 @@ Widget build(BuildContext context) {
                       decoration: const InputDecoration(
                         labelText: "Contraseña",
                         border: OutlineInputBorder(),
+                        suffixIcon:Icon(Icons.lock),
                       ),
                       obscureText: true,
                       validator: (value) {
